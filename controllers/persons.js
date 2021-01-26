@@ -7,9 +7,33 @@ const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const path = require('path')
+const fs = require('fs')
 let reqPath = path.join(__dirname, '../');
 
-let persons = []; //The database
+let persons = [];
+
+//Read json file
+function jsonReader(filePath, cb) {
+    fs.readFile(filePath, (err, fileData) => {
+        if (err) {
+            return cb && cb(err)
+        }
+        try {
+            const object = JSON.parse(fileData)
+            return cb && cb(null, object)
+        } catch(err) {
+            return cb && cb(err)
+        }
+    })
+}
+
+jsonReader('./person.json', (err, content) => {
+    if (err) {
+        console.log(err)
+        return
+    }
+    persons = content;
+})
 
 export const getAllPersons = (req, res) => {
     res.send(persons);
@@ -40,16 +64,18 @@ export const createPerson =  (req, res) => {
 
 export const getPerson = (req, res) => {
     const { id } = req.params; // req.params contains the ID. This is from the path: persons/[ID]
-    const foundPerson = persons.find((person) => person.id === id); //Find the person with the corresponding ID
-
+    const intID = parseInt(id)  
+    const foundPerson = persons.find((person) => person.id === intID); //Find the person with the corresponding ID
+    
     if (foundPerson)res.send(foundPerson);
-    else res.status(404).send(`Person with id ${id} does not exist.`);
+    else res.status(404).send(`Person with id ${intID} does not exist.`);
 }
 
 // To do: Shows edit form for one person
 export const editForm =  (req, res) => {
     const { id } = req.params; // req.params contains the ID. This is from the path: persons/[ID]
-    const foundPerson = persons.find((person) => person.id === id); //Find the person with the corresponding ID
+    const intID = parseInt(id)  
+    const foundPerson = persons.find((person) => person.id === intID); //Find the person with the corresponding ID
 
     if (foundPerson) res.sendFile(reqPath + "html/edit.html");
     else res.status(404).send(`Person with id ${id} does not exist.`);
@@ -57,8 +83,9 @@ export const editForm =  (req, res) => {
 
 export const updatePerson = (req, res) => {
     const { id } = req.params; // req.params contains the ID. This is from the path: persons/[ID]
+    const intID = parseInt(id)  
     const {name, age} = req.body; //Gets the name and age from req.body. This info will replace the old info in the database
-    const foundPerson = persons.find((person) => person.id === id); //Find the person with the corresponding ID
+    const foundPerson = persons.find((person) => person.id === intID); //Find the person with the corresponding ID
 
     if (foundPerson){
         if (name) foundPerson.name = name; //If name has a value, then we want to change that variable in the database
@@ -70,10 +97,11 @@ export const updatePerson = (req, res) => {
 
 export const deletePerson = (req,res) =>{
     const { id } = req.params; // req.params contains the ID. This is from the path: persons/[ID]
-    const foundPerson = persons.find((person) => person.id === id); //Find the person with the corresponding ID
+    const intID = parseInt(id)  
+    const foundPerson = persons.find((person) => person.id === intID); //Find the person with the corresponding ID
 
     if (foundPerson){
-        persons = persons.filter((person) => person.id !== id); //Deletes person from database if the ID matches
+        persons = persons.filter((person) => person.id !== intID); //Deletes person from database if the ID matches
         res.send(`Person with id ${id} deleted from the database.`);
     }
     else res.status(404).send(`Person with id ${id} does not exist.`);

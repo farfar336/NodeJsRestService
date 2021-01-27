@@ -1,21 +1,59 @@
 import express from 'express';
 
-import { getAllPersons, newForm, createPerson, getPerson, editForm, updatePerson, deletePerson} from '../controllers/persons.js';
+import multer from 'multer';
+const upload = multer();
+
+import { getAllPersons, newForm, createPerson, getPerson, editForm, updatePerson, deletePerson } from '../controllers/persons.js';
 
 const router = express.Router();
 
-router.get('/', getAllPersons); //Displays all persons
+/**
+ * Index operation.
+ * 
+ * Displays all persons
+ */
+router.get('', getAllPersons);
 
-router.get('/new', newForm); // Shows form for new person
+/**
+ * New operation.
+ * 
+ * Shows form for new person
+ */
+router.get('/new', newForm);
 
-router.post('/', createPerson); //Creates a new person
+/**
+ * Create operation.
+ * 
+ * Creates a new person
+ */
+router.post('', upload.none(), createPerson);
 
-router.get('/:id', getPerson); //Shows one specified person
+/**
+ * Show operation.
+ * 
+ * Shows one specified person
+ */
+router.get('/:id', getPerson);
 
-router.get('/:id/edit', editForm); //Shows edit form for one person
+/**
+ * Edit operation.
+ * 
+ * Shows edit form for one person
+ */
+router.get('/:id/edit', editForm);
 
-router.put('/:id', updatePerson); //Updates a particular person
+/**
+ * Update operation.
+ * 
+ * Updates a particular person
+ */
+router.put('/:id', updatePerson);
 
-router.delete('/:id', deletePerson); //Deletes a particular person
+/**
+ * Destroy operation.
+ * 
+ * Deletes a particular person
+ */
+router.delete('/:id', deletePerson);
 
 export default router;

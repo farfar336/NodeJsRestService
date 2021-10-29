@@ -6,14 +6,8 @@ Technologies used: JavaScript, Node.js, VS code, Postman, Microsoft Azure
 
 A Node.js server that uses RESTful Routes in 7 different ways:
 
-NAME      |     PATH                 |   HTTP VERB     |            PURPOSE 
-Index       | /persons               |      GET                | Displays all persons
-New         | /persons/new      |      GET                | Shows new form for new person 
-Create     | /persons               |      POST              | Creates a new person
-Show       | /persons/:id         |      GET                | Shows one specified person
-Edit          | /persons/:id/edit |      GET                | Shows edit form for one person
-Update    | /persons/:id         |      PUT                | Updates a particular person
-Destroy   | /persons/:id         |      DELETE         | Deletes a particular person
+![image](https://user-images.githubusercontent.com/44077833/139470065-8fe62c75-0a93-4f02-88c5-43dd2d8a9bb7.png)
+
 
 **Instructions on how to run**
 1. Run npm start
